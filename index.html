@@ -1,0 +1,29 @@
+<!doctype html>
+<!--
+  ============================================================
+  fedo~explorer — punto de entrada HTML del renderer React
+  Firmado: fedo soft
+  ============================================================
+-->
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!--
+      Politica de seguridad de contenido:
+      - Permite fuentes embebidas (data:) para las tipografias empaquetadas
+      - Permite el protocolo propio fedo-media: (streaming de audio)
+      - En desarrollo habilita ws: para el hot reload de Vite
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data:; media-src 'self' fedo-media: blob:; connect-src 'self' ws: http://127.0.0.1:5173 fedo-media:"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fedo~explorer</title>
+  </head>
+  <body>
+    <!-- Raiz donde React monta toda la interfaz -->
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
