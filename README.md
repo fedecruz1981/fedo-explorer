@@ -6,9 +6,7 @@
 
 Escrito por **Federico Cruz (fedo~sound)** — una herramienta pensada para técnicos de sonido y músicos que trabajan con muchas carpetas de audio.
 
-![captura pendiente](./docs/captura.png)
-
-> La captura se agrega en una próxima versión.
+> 🔜 Se agrega una captura de pantalla en una próxima versión.
 
 ## Características
 
