@@ -18,5 +18,10 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist'
+  },
+  test: {
+    // Solo los tests unitarios de test/: evita que vitest capture los
+    // *.spec.mjs de Playwright, que viven en e2e/
+    include: ['test/**/*.test.js']
   }
 })

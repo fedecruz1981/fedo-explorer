@@ -9,6 +9,8 @@ import { defineConfig } from '@playwright/test'
 export default defineConfig({
   // Limita los tests a la carpeta e2e para no capturar los *.test.js de vitest
   testDir: './e2e',
+  // Solo acepta los *.e2e.mjs de la carpeta e2e
+  testMatch: /.*\.e2e\.mjs/,
   // Un solo worker: la app Electron es pesada y no necesita paralelismo
   workers: 1,
   // Sin reintentos: un fallo de arranque es un fallo real, no es flakiness
