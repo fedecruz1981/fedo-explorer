@@ -17,6 +17,7 @@ Instalador para Windows (x64), sin instaladores de Python ni ffmpeg: el audio lo
 
 | Versión | Archivo | Tamaño |
 |---------|---------|--------|
+| [0.2.1](https://github.com/fedecruz1981/fedo-explorer/releases/tag/v0.2.1) | `fedo.explorer.Setup.0.2.1.exe` | 110,7 MB |
 | [0.2.0](https://github.com/fedecruz1981/fedo-explorer/releases/tag/v0.2.0) | `fedo.explorer.Setup.0.2.0.exe` | 110,7 MB |
 
 [Todas las releases](https://github.com/fedecruz1981/fedo-explorer/releases) · [reportar un problema](https://github.com/fedecruz1981/fedo-explorer/issues)
