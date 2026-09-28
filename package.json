@@ -1,7 +1,7 @@
 {
   "name": "fedo-explorer",
   "productName": "fedo~explorer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Explorador de archivos de audio con reproduccion integrada, metadata, waveform y analisis de BPM y LUFS",
   "main": "electron/main.js",
   "author": "Federico · fedo~sound",
