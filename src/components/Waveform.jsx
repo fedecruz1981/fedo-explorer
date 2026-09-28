@@ -3,7 +3,7 @@
 //  Dibuja los picos, el progreso y permite seek por click
 //  Firmado: fedo soft
 // ============================================================
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function Waveform({ peaks, time, duration, active, onSeek }) {
   const canvasRef = useRef(null)

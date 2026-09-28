@@ -3,7 +3,6 @@
 //  Play/pausa, info de pista, waveform, tiempo, medidores y volumen
 //  Firmado: fedo soft
 // ============================================================
-import React from 'react'
 import { Pause, Play, Volume2, VolumeX } from 'lucide-react'
 import Waveform from './Waveform'
 import { formatDuration } from '../lib/format'

@@ -4,7 +4,6 @@
 //  con el boton de borrado visible al pasar el mouse.
 //  Firmado: fedo soft
 // ============================================================
-import React from 'react'
 import { FileAudio, Trash2 } from 'lucide-react'
 import { formatDuration, formatBitrate, formatSampleRate } from '../lib/format'
 

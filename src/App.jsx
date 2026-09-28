@@ -4,7 +4,7 @@
 //  ademas de toda la logica de reproduccion y borrado.
 //  Firmado: fedo soft
 // ============================================================
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Sidebar from './components/Sidebar'
 import FileTable from './components/FileTable'
 import TransportBar from './components/TransportBar'
@@ -173,10 +173,10 @@ export default function App() {
       while (i < unparsed.length) {
         if (token !== metaToken.current) return
         const f = unparsed[i++]
-        let m = null
+        let m
         try {
           m = await window.fedo.readAudioMeta(f.path)
-        } catch (_) {
+        } catch {
           m = null
         }
         if (token !== metaToken.current) return
@@ -222,7 +222,7 @@ export default function App() {
       if (token !== peakToken.current) return
       peaksCache.current.set(path, result.peaks)
       setPeaks(result.peaks)
-    } catch (_) {
+    } catch {
       if (token === peakToken.current) setPeaks(null)
     }
   }, [])
