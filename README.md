@@ -13,6 +13,8 @@ Escrito por **Federico Cruz (fedo~sound)** — una herramienta pensada para téc
 
 ## Descargas
 
+**Windows x64 primero** — El instalador es para Windows x64, sin dependencias externas de Python ni ffmpeg: el audio lo decodifica el navegador (Electron/Chromium).
+
 Instalador para Windows (x64), sin instaladores de Python ni ffmpeg: el audio lo decodifica el navegador.
 
 | Versión | Archivo | Tamaño |
