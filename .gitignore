@@ -10,6 +10,12 @@ dev.log
 npm-debug.log*
 yarn-debug.log*
 
+# playwright
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+
 # environment variables
 .env
 .env.production

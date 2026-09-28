@@ -29,3 +29,6 @@ jobs:
 
       - name: Build renderer
         run: npm run build
+
+      - name: Smoke test (Electron)
+        run: npm run test:e2e
