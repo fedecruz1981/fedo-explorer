@@ -8,6 +8,16 @@ Escrito por **Federico Cruz (fedo~sound)** — una herramienta pensada para téc
 
 > 🔜 Se agrega una captura de pantalla en una próxima versión.
 
+## Descargas
+
+Instalador para Windows (x64), sin instaladores de Python ni ffmpeg: el audio lo decodifica el navegador.
+
+| Versión | Archivo | Tamaño |
+|---------|---------|--------|
+| [0.2.0](https://github.com/fedecruz1981/fedo-explorer/releases/tag/v0.2.0) | `fedo.explorer.Setup.0.2.0.exe` | 110,7 MB |
+
+[Todas las releases](https://github.com/fedecruz1981/fedo-explorer/releases) · [reportar un problema](https://github.com/fedecruz1981/fedo-explorer/issues)
+
 ## Características
 
 - 📂 **Explorador de carpetas**: sidebar con accesos rápidos (Home, Escritorio, Documentos, Descargas, Música) y todos los discos disponibles
