@@ -3,7 +3,6 @@
 //  Accesos rapidos, discos y carpetas expandibles con conteo
 //  Firmado: fedo soft
 // ============================================================
-import React, { useEffect, useRef, useState } from 'react'
 import { ChevronDown, ChevronRight, Folder, FolderOpen } from 'lucide-react'
 
 // Barra lateral: marca, accesos rapidos y discos como raices del arbol
@@ -30,6 +29,7 @@ export default function Sidebar({ roots, nodes, expanded, selectedPath, onToggle
                 path={r.path}
                 name={r.name}
                 node={nodes[r.path]}
+                nodes={nodes}
                 expanded={expanded}
                 selected={selectedPath === r.path}
                 onToggle={onToggle}
@@ -49,6 +49,7 @@ export default function Sidebar({ roots, nodes, expanded, selectedPath, onToggle
                 path={r.path}
                 name={r.name}
                 node={nodes[r.path]}
+                nodes={nodes}
                 expanded={expanded}
                 selected={selectedPath === r.path}
                 onToggle={onToggle}
@@ -69,7 +70,7 @@ export default function Sidebar({ roots, nodes, expanded, selectedPath, onToggle
 
 // Nodo recursivo del arbol: fila + hijos colapsables
 // `count` llega como prop desde el nodo padre (total de audio de esta carpeta)
-function TreeNode({ path, name, node, expanded, selected, onToggle, onSelect, count }) {
+function TreeNode({ path, name, node, nodes, expanded, selected, onToggle, onSelect, count }) {
   const isOpen = expanded.has(path)
 
   return (
@@ -124,6 +125,7 @@ function TreeNode({ path, name, node, expanded, selected, onToggle, onSelect, co
                 path={d.path}
                 name={d.name}
                 node={nodes[d.path]}
+                nodes={nodes}
                 expanded={expanded}
                 selected={selected === d.path}
                 onToggle={onToggle}
