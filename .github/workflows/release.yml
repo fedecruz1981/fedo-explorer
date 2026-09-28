@@ -58,7 +58,10 @@ jobs:
         run: npm test
 
       - name: Compilar instalador
-        run: npm run dist
+        # --publish never es obligatorio: con un tag presente, electron-builder
+        # intenta publicar la release por su cuenta y falla porque en este paso
+        # todavia no hay GH_TOKEN. La publicacion la hace el paso de abajo.
+        run: npm run dist -- --publish never
 
       - name: Publicar release
         shell: bash
