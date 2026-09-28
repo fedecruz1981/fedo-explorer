@@ -2,7 +2,7 @@
   "name": "fedo-explorer",
   "productName": "fedo~explorer",
   "version": "0.1.0",
-  "description": "Explorador de archivos de audio con reproduccion integrada, metadata y waveform (BPM/LUFS en fase 2)",
+  "description": "Explorador de archivos de audio con reproduccion integrada, metadata, waveform y analisis de BPM y LUFS",
   "main": "electron/main.js",
   "author": "Federico · fedo~sound",
   "license": "MIT",
@@ -51,7 +51,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.63.0",
-    "@vitejs/plugin-react": "^4.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
     "concurrently": "^9.0.0",
     "cross-env": "^7.0.3",
     "electron": "^44.4.5",
@@ -60,8 +60,8 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.12.0",
     "typescript": "^7.0.2",
-    "vite": "^5.4.0",
-    "vitest": "^2.1.9",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2",
     "wait-on": "^8.0.0"
   }
 }

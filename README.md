@@ -42,6 +42,8 @@ Escrito por **Federico Cruz (fedo~sound)** — una herramienta pensada para téc
 
 ## Cómo ejecutarlo
 
+Requiere **Node 24** (Vite 8 pide 20.19+ y Vitest 5 pide 22.12+, asi que 20 se queda corto).
+
 ```bash
 npm install       # instala dependencias
 npm run dev       # desarrollo (Vite + Electron con hot reload)
