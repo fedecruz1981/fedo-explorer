@@ -1,7 +1,7 @@
 {
   "name": "fedo-explorer",
   "productName": "fedo~explorer",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Explorador de archivos de audio con reproduccion integrada, metadata, waveform y analisis de BPM y LUFS",
   "main": "electron/main.js",
   "author": "Federico · fedo~sound",
@@ -15,6 +15,7 @@
     "lint": "eslint src",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "captura": "node e2e/screenshot.mjs",
     "start": "npm run build && electron .",
     "pack": "npm run build && electron-builder --dir",
     "dist": "npm run build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder"

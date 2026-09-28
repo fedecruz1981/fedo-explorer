@@ -6,7 +6,10 @@
 
 Escrito por **Federico Cruz (fedo~sound)** — una herramienta pensada para técnicos de sonido y músicos que trabajan con muchas carpetas de audio.
 
-> 🔜 Se agrega una captura de pantalla en una próxima versión.
+> La biblioteca de la captura es de audio sintético: los BPM y los LUFS que
+> muestra son mediciones reales de los archivos, no valores de ejemplo.
+
+![fedo~explorer con la biblioteca cargada, la tabla midiendo BPM y LUFS por archivo y el transporte con el waveform del archivo en reproducción](docs/captura.png)
 
 ## Descargas
 
