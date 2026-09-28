@@ -77,8 +77,11 @@ describe('decodeAndPeak', () => {
   const audioBuffer = mono([1, -1, 0.5, -0.5])
 
   beforeEach(() => {
-    globalThis.fetch = vi.fn()
     globalThis.window = globalThis.window || {}
+    // El renderer pide los bytes por IPC: el stub simula al proceso principal
+    globalThis.window.fedo = {
+      readAudio: vi.fn().mockResolvedValue(new ArrayBuffer(8)),
+    }
     globalThis.window.AudioContext = class {
       constructor() {
         this.state = 'running'
@@ -89,18 +92,19 @@ describe('decodeAndPeak', () => {
   })
 
   it('devuelve los picos y la duracion', async () => {
-    globalThis.fetch.mockResolvedValue({
-      ok: true,
-      arrayBuffer: async () => new ArrayBuffer(8),
-    })
-    const { peaks, duration } = await decodeAndPeak('fedo-media://file/x.mp3', 4)
+    const { peaks, duration } = await decodeAndPeak('C:\\musica\\x.mp3', 4)
     expect(peaks).toHaveLength(4)
     expect(duration).toBe(audioBuffer.duration)
   })
 
-  it('lanza si la respuesta no es ok', async () => {
-    globalThis.fetch.mockResolvedValue({ ok: false })
-    await expect(decodeAndPeak('fedo-media://file/x.mp3', 4)).rejects.toThrow('fetch failed')
+  it('pide los bytes del archivo por el puente de IPC', async () => {
+    await decodeAndPeak('C:\\musica\\x.mp3', 4)
+    expect(globalThis.window.fedo.readAudio).toHaveBeenCalledWith('C:\\musica\\x.mp3')
+  })
+
+  it('propaga el error si el archivo no se puede leer', async () => {
+    globalThis.window.fedo.readAudio.mockRejectedValue(new Error('not an audio file'))
+    await expect(decodeAndPeak('C:\\musica\\x.txt', 4)).rejects.toThrow('not an audio file')
   })
 
   it('reutiliza el mismo AudioContext entre llamadas', async () => {
@@ -113,14 +117,10 @@ describe('decodeAndPeak', () => {
       this.decodeAudioData = vi.fn().mockResolvedValue(audioBuffer)
     })
     globalThis.window.AudioContext = spy
-    globalThis.fetch.mockResolvedValue({
-      ok: true,
-      arrayBuffer: async () => new ArrayBuffer(8),
-    })
 
     const fresh = await import('../src/lib/peaks.js')
-    await fresh.decodeAndPeak('fedo-media://file/x.mp3', 4)
-    await fresh.decodeAndPeak('fedo-media://file/y.mp3', 4)
+    await fresh.decodeAndPeak('C:\\musica\\x.mp3', 4)
+    await fresh.decodeAndPeak('C:\\musica\\y.mp3', 4)
 
     expect(spy).toHaveBeenCalledTimes(1)
   })

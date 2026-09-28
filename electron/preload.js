@@ -16,6 +16,8 @@ contextBridge.exposeInMainWorld('fedo', {
   countAudio: (dirPath) => ipcRenderer.invoke('fedo:countAudio', dirPath),
   // Lee la metadata tecnica de un archivo (duracion, formato, etc.)
   readAudioMeta: (filePath) => ipcRenderer.invoke('fedo:readAudioMeta', filePath),
+  // Lee los bytes crudos del archivo, para decodificarlo con Web Audio
+  readAudio: (filePath) => ipcRenderer.invoke('fedo:readAudio', filePath),
   // Mueve un archivo a la papelera del sistema
   deleteFile: (filePath) => ipcRenderer.invoke('fedo:deleteFile', filePath),
   // Construye la URL del protocolo de streaming para reproducir

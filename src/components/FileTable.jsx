@@ -1,13 +1,40 @@
 // ============================================================
 //  fedo~explorer — tabla de archivos de la carpeta activa
-//  Muestra nombre, duracion, formato (y placeholders BPM/LUFS)
-//  con el boton de borrado visible al pasar el mouse.
+//  Muestra nombre, duracion, formato y el analisis de audio
+//  (BPM y LUFS) con el boton de borrado visible al pasar el mouse.
 //  Firmado: fedo soft
 // ============================================================
 import { FileAudio, Trash2 } from 'lucide-react'
 import { formatDuration, formatBitrate, formatSampleRate } from '../lib/format'
 
-export default function FileTable({ files, meta, current, playing, selected, onPlay, onDelete, loading }) {
+// Celda de analisis: spinner mientras se decodifica el archivo, el valor
+// medido si salio, o un guion si no se pudo medir. La entrada `a` del cache
+// es null (en curso), false (fallo) o el objeto con las mediciones.
+function analysisCell(a, key, title) {
+  if (a === null) {
+    return (
+      <span className="cell-loading">
+        <span className="spinner" />
+      </span>
+    )
+  }
+  if (a && a[key] != null) {
+    return <span title={title}>{a[key]}</span>
+  }
+  return <span className="cell-dim">—</span>
+}
+
+export default function FileTable({
+  files,
+  meta,
+  analysis,
+  current,
+  playing,
+  selected,
+  onPlay,
+  onDelete,
+  loading,
+}) {
   // Encabezado fijo de la tabla (grid alineado con las filas)
   const columns = (
     <div className="table-head">
@@ -35,6 +62,8 @@ export default function FileTable({ files, meta, current, playing, selected, onP
 
       {files.map((f) => {
         const m = meta.get(f.path)
+        // Analisis del archivo: null = en curso, false = fallo, objeto = listo
+        const a = analysis.get(f.path)
         const isCurrent = current && current.path === f.path
         // Formato principal: codec o contenedor de la metadata
         const fmt = m && (m.codec || m.container)
@@ -86,14 +115,12 @@ export default function FileTable({ files, meta, current, playing, selected, onP
               {sub && <div className="cell-meta-sub">{sub}</div>}
             </div>
 
-            {/* BPM: placeholder de la fase 2 (deteccion de tempo) */}
+            {/* BPM detectado y loudness integrado EBU R128 */}
             <div className="cell cell-bpm" style={{ textAlign: 'right' }}>
-              <span className="cell-dim">—</span>
+              {analysisCell(a, 'bpm', 'tempo detectado (autocorrelacion de onsets)')}
             </div>
-
-            {/* LUFS: placeholder de la fase 2 (loudness EBU R128) */}
             <div className="cell cell-lufs" style={{ textAlign: 'right' }}>
-              <span className="cell-dim">—</span>
+              {analysisCell(a, 'lufs', 'loudness integrado (EBU R128 / ITU-R BS.1770-4)')}
             </div>
 
             {/* Borrado por fila: visible al hover, no dispara reproduccion */}

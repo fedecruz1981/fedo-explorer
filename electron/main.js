@@ -178,6 +178,19 @@ async function readAudioMeta(filePath) {
   }
 }
 
+// Lee los bytes crudos de un archivo de audio para que el renderer lo
+// decodifique con Web Audio API. Pasa por IPC y no por el protocolo
+// `fedo-media://` porque, con el renderer cargado desde `file://` (la app
+// empaquetada), el navegador bloquea por CORS cualquier fetch a un esquema
+// propio: solo responde cuando el origen es http, como el servidor de Vite
+// en desarrollo. Devuelve un ArrayBuffer plano porque los Buffer de Node no
+// viajan de forma fiable por el canal IPC.
+async function readAudio(filePath) {
+  if (!isAudioFile(path.basename(filePath))) throw new Error('not an audio file')
+  const buf = await fs.promises.readFile(filePath)
+  return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
+}
+
 // Raices del arbol lateral: accesos rapidos + unidades disponibles.
 // En Windows enumera las letras de disco existentes (A: a Z:).
 async function listRoots() {
@@ -254,6 +267,8 @@ app.whenReady().then(() => {
     countAudio(dirPath, new Set(), { used: 0 })
   )
   ipcMain.handle('fedo:readAudioMeta', (_e, filePath) => readAudioMeta(filePath))
+  // Bytes crudos del archivo, para el waveform y el analisis de audio
+  ipcMain.handle('fedo:readAudio', (_e, filePath) => readAudio(filePath))
   // El borrado envia el archivo a la papelera del sistema (no lo destruye)
   ipcMain.handle('fedo:deleteFile', async (_e, filePath) => {
     await shell.trashItem(filePath)

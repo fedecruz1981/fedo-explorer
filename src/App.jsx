@@ -9,7 +9,7 @@ import Sidebar from './components/Sidebar'
 import FileTable from './components/FileTable'
 import TransportBar from './components/TransportBar'
 import { RefreshCw, Trash2 } from 'lucide-react'
-import { decodeAndPeak } from './lib/peaks'
+import { analyzeMedia } from './lib/analysis'
 
 export default function App() {
   // Referencia al elemento <audio> oculto que reproduce los archivos
@@ -39,9 +39,12 @@ export default function App() {
   const [volume, setVolume] = useState(1)
   const [peaks, setPeaks] = useState(null) // waveform del archivo actual
 
-  // Cache de waveform por archivo + token anti-carrera
-  const peaksCache = useRef(new Map())
-  const peakToken = useRef(0)
+  // Cache de analisis por archivo + token anti-carrera.
+  // Cada entrada guarda {peaks, bpm, lufs, ...}: null = analizando,
+  // false = fallo, objeto = listo. La clave ausente = sin analizar.
+  const analysisRef = useRef(new Map())
+  const [analysis, setAnalysis] = useState(analysisRef.current)
+  const analysisToken = useRef(0)
 
   // Al arrancar: cargar raices y seleccionar el Home por defecto
   useEffect(() => {
@@ -206,24 +209,42 @@ export default function App() {
     const src = window.fedo.mediaUrl(file.path)
     a.src = src
     a.play().catch(() => {})
-    decodePeaks(file.path, src)
+    runAnalysis(file.path)
   }, [current])
 
-  // Decodifica el archivo en segundo plano y calcula los picos del waveform.
-  // El resultado se cachea para no repetir el trabajo en visitas siguientes.
-  const decodePeaks = useCallback(async (path, src) => {
-    const token = ++peakToken.current
-    if (peaksCache.current.has(path)) {
-      setPeaks(peaksCache.current.get(path))
+  // Decodifica el archivo una sola vez para sacar de ese mismo buffer
+  // los picos del waveform, el BPM y el LUFS. El resultado se cachea
+  // para no repetir el trabajo en visitas siguientes.
+  const runAnalysis = useCallback(async (path) => {
+    const token = ++analysisToken.current
+    // Ya analizado: se reutiliza el resultado de la cache
+    const cached = analysisRef.current.get(path)
+    if (cached) {
+      if (token === analysisToken.current) {
+        setPeaks(cached === false ? null : cached.peaks)
+        setAnalysis(new Map(analysisRef.current))
+      }
       return
     }
+    // Ya hay un analisis en vuelo para este archivo
+    if (analysisRef.current.has(path)) return
+    // Marca la entrada como pendiente para que la fila muestre el spinner
+    analysisRef.current.set(path, null)
+    setAnalysis(new Map(analysisRef.current))
     try {
-      const result = await decodeAndPeak(src, 1400)
-      if (token !== peakToken.current) return
-      peaksCache.current.set(path, result.peaks)
-      setPeaks(result.peaks)
+      const result = await analyzeMedia(path, 1400)
+      analysisRef.current.set(path, result)
+      if (token === analysisToken.current) {
+        setPeaks(result.peaks)
+        setAnalysis(new Map(analysisRef.current))
+      }
     } catch {
-      if (token === peakToken.current) setPeaks(null)
+      // Si falla (formato no decodificable) queda marcado como fallo
+      analysisRef.current.set(path, false)
+      if (token === analysisToken.current) {
+        setPeaks(null)
+        setAnalysis(new Map(analysisRef.current))
+      }
     }
   }, [])
 
@@ -366,6 +387,7 @@ export default function App() {
             <FileTable
               files={dirFiles}
               meta={meta}
+              analysis={analysis}
               current={current}
               playing={playing}
               selected={selectedFile ? selectedFile.path : null}
@@ -383,6 +405,7 @@ export default function App() {
             duration={duration}
             volume={volume}
             peaks={peaks}
+            analysis={current ? analysis.get(current.path) : null}
             onToggle={togglePlay}
             onSeek={onSeek}
             onVolume={onVolume}

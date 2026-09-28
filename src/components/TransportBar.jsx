@@ -14,10 +14,41 @@ export default function TransportBar({
   duration,
   volume,
   peaks,
+  analysis,
   onToggle,
   onSeek,
-  onVolume
+  onVolume,
 }) {
+  // Medidor de analisis: spinner, valor medido o guion segun el estado
+  const meter = (label, key, title) => {
+    // Hay archivo pero todavia no se termino de analizar
+    if (analysis === null && current) {
+      return (
+        <div className="meter" title={`${title} — analizando`}>
+          <span className="meter-label">{label}</span>
+          <span className="meter-value">
+            <span className="spinner" />
+          </span>
+        </div>
+      )
+    }
+    // El archivo tiene la medicion disponible
+    if (analysis && analysis[key] != null) {
+      return (
+        <div className="meter" title={title}>
+          <span className="meter-label">{label}</span>
+          <span className="meter-value">{analysis[key]}</span>
+        </div>
+      )
+    }
+    // Sin archivo o sin medicion
+    return (
+      <div className="meter" title={title}>
+        <span className="meter-label">{label}</span>
+        <span className="meter-value dim">—</span>
+      </div>
+    )
+  }
   return (
     <footer className="transport">
       {/* Fila superior: transporte + waveform + tiempo */}
@@ -60,16 +91,8 @@ export default function TransportBar({
       {/* Fila inferior: medidores de analisis + volumen */}
       <div className="transport-bottom">
         <div className="meters">
-          {/* LUFS: placeholder hasta la fase 2 (filtro ebur128 de ffmpeg) */}
-          <div className="meter" title="loudness integrado (EBU R128) — disponible en fase 2">
-            <span className="meter-label">lufs</span>
-            <span className="meter-value dim">—</span>
-          </div>
-          {/* BPM: placeholder hasta la fase 2 (deteccion de tempo) */}
-          <div className="meter" title="tempo detectado — disponible en fase 2">
-            <span className="meter-label">bpm</span>
-            <span className="meter-value dim">—</span>
-          </div>
+          {meter('lufs', 'lufs', 'loudness integrado (EBU R128 / ITU-R BS.1770-4)')}
+          {meter('bpm', 'bpm', 'tempo detectado (autocorrelacion de onsets)')}
         </div>
 
         {/* Control de volumen */}

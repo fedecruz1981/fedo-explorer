@@ -30,14 +30,19 @@ export function computePeaks(buffer, bins) {
   return peaks
 }
 
-// Descarga el archivo (via el protocolo fedo-media), lo decodifica
-// con Web Audio API y devuelve los picos mas su duracion real.
-export async function decodeAndPeak(src, bins) {
-  const res = await fetch(src)
-  if (!res.ok) throw new Error('fetch failed')
-  const buf = await res.arrayBuffer()
+// Pide los bytes del archivo al proceso principal (via IPC) y lo decodifica
+// con Web Audio API. El buffer completo permite analizar el audio una sola
+// vez: de aqui salen los picos, el BPM y el LUFS.
+export async function decodeBuffer(filePath) {
+  const bytes = await window.fedo.readAudio(filePath)
   const ctx = getCtx()
-  const audioBuffer = await ctx.decodeAudioData(buf)
+  return ctx.decodeAudioData(bytes)
+}
+
+// Descarga el archivo, lo decodifica y devuelve los picos
+// mas su duracion real.
+export async function decodeAndPeak(filePath, bins) {
+  const audioBuffer = await decodeBuffer(filePath)
   return { peaks: computePeaks(audioBuffer, bins), duration: audioBuffer.duration }
 }
 
