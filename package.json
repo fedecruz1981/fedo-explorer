@@ -13,6 +13,7 @@
     "dev:electron": "wait-on tcp:127.0.0.1:5173 && cross-env VITE_DEV_SERVER_URL=http://127.0.0.1:5173 electron .",
     "build": "vite build",
     "lint": "eslint src",
+    "test": "vitest run",
     "start": "npm run build && electron .",
     "pack": "npm run build && electron-builder --dir",
     "dist": "npm run build && electron-builder"
@@ -58,6 +59,7 @@
     "globals": "^17.12.0",
     "typescript": "^7.0.2",
     "vite": "^5.4.0",
+    "vitest": "^2.1.9",
     "wait-on": "^8.0.0"
   }
 }
