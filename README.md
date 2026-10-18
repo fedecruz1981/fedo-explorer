@@ -96,4 +96,15 @@ npm run dist      # instalador (NSIS / dmg / AppImage)
 
 ## Licencia
 
-[MIT](./LICENSE)
+[MIT](./LICENSE).
+
+Componentes de terceros (Electron/Chromium, React, `music-metadata`, tipografías con licencia
+OFL): ver [`THIRD-PARTY.md`](./THIRD-PARTY.md).
+
+## Aviso legal
+
+- **Sin relación comercial con terceros**: proyecto independiente, sin afiliación ni aval.
+- **Tus archivos son tuyos**: la app lee y escribe en las carpetas que le indiques, dentro de tu
+  equipo, y no envía nada a ningún servidor.
+- **Sin garantías**: el software se entrega «tal cual», sin garantía de ningún tipo (ver
+  `LICENSE`).
